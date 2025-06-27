@@ -1,3 +1,6 @@
+
+![Group](https://github.com/user-attachments/assets/419b03f3-92e3-4ace-8ff2-b4c6110eea86)
+
 # MoodMixer
 
 MoodMixer is a fun, interactive .NET MAUI application that allows users to create, save, and apply custom color themes based on their mood. The app features a clean, professional user interface and follows modern MVVM architecture principles.
