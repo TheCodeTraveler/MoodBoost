@@ -14,30 +14,35 @@ public partial class MainPageViewModel : ObservableObject
         GenerateNewQuote();
     }
 
+    public string SelectedMoodName => SelectedMood?.Name ?? string.Empty;
+    public string SelectedMoodEmoji => SelectedMood?.Emoji ?? string.Empty;
+    public string SelectedMoodDescription => SelectedMood?.Description ?? string.Empty;
+    public bool HasSelectedMood => SelectedMood is not null;
+
     public ObservableCollection<MoodEntry> Moods { get; }
 
     [ObservableProperty]
     public partial string CurrentQuote { get; set; } = string.Empty;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SelectedMoodName))]
+    [NotifyPropertyChangedFor(nameof(SelectedMoodEmoji))]
+    [NotifyPropertyChangedFor(nameof(SelectedMoodDescription))]
+    [NotifyPropertyChangedFor(nameof(HasSelectedMood))]
     public partial MoodEntry? SelectedMood { get; set; }
 
     [ObservableProperty]
     public partial DateTimeOffset TodayDate { get; set; }
 
-    [ObservableProperty]
-    public partial bool HasSelectedMood { get; set; }
-
     [RelayCommand]
-    private void SelectMood(MoodEntry mood)
+    void SelectMood(MoodEntry mood)
     {
         SelectedMood = mood;
-        HasSelectedMood = true;
         GenerateNewQuote();
     }
 
     [RelayCommand]
-    private void GenerateNewQuote()
+    void GenerateNewQuote()
     {
         var quotes = MoodData.MotivationalQuotes;
         var randomIndex = Random.Shared.Next(quotes.Count);
@@ -45,10 +50,9 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void ResetMood()
+    void ResetMood()
     {
         SelectedMood = null;
-        HasSelectedMood = false;
         GenerateNewQuote();
     }
 }

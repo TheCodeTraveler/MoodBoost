@@ -8,13 +8,15 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
+        <WarningsAsErrors>nullable</WarningsAsErrors>
 
 		<!-- Display Version -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">34.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">16.0</SupportedOSPlatformVersion>
 
 		<!-- Application Title and ID -->
 		<ApplicationTitle>MoodBoost</ApplicationTitle>
@@ -43,18 +45,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.6" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="12.0.0" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
-		<AndroidResource Include="Platforms\Android\Resources\**\*" />
-		<Compile Remove="Platforms\**\*" />
-		<None Include="Platforms\**\*" Exclude="Platforms\Android\**\*" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-ios'">
-		<BundleResource Include="Platforms\iOS\**\*" />
-		<Compile Remove="Platforms\**\*" />
-		<None Include="Platforms\**\*" Exclude="Platforms\iOS\**\*" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.81" />
 	</ItemGroup>
 
 </Project>

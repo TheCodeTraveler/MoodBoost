@@ -9,7 +9,7 @@ public record MoodEntry(
 
 public static class MoodData
 {
-    public static IReadOnlyList<MoodEntry> Moods { get; } = 
+    public static IReadOnlyList<MoodEntry> Moods { get; } =
     [
         new("😄", "Fantastic", "I'm feeling amazing today!", Color.FromArgb("#4CAF50")),
         new("😊", "Happy", "Things are going well!", Color.FromArgb("#8BC34A")),
@@ -18,7 +18,7 @@ public static class MoodData
         new("😢", "Sad", "Feeling quite low today", Color.FromArgb("#F44336"))
     ];
 
-    public static IReadOnlyList<string> MotivationalQuotes { get; } = 
+    public static IReadOnlyList<string> MotivationalQuotes { get; } =
     [
         "Every day is a new beginning. Take a deep breath and start again.",
         "You are stronger than you think and more capable than you imagine.",

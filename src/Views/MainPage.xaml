@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:MoodBoost.ViewModels"
+             xmlns:model="clr-namespace:MoodBoost.Models"
              x:DataType="vm:MainPageViewModel"
              Title="MoodBoost"
              BackgroundColor="{StaticResource Primary}">
@@ -62,8 +63,7 @@
                 </CollectionView.ItemsLayout>
                 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid RowDefinitions="*,Auto" ColumnDefinitions="*">
+                    <DataTemplate x:DataType="model:MoodEntry">
                             <Border Grid.Row="0"
                                     Grid.RowSpan="2"
                                     BackgroundColor="{Binding Color}"
@@ -78,23 +78,26 @@
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=SelectMoodCommand}"
                                                           CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
+
+                                <Border.Content>
+                                    <VerticalStackLayout VerticalOptions="Center"
+                                                         Spacing="4">
+                                        <Label Text="{Binding Emoji}"
+                                               FontSize="24"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+
+                                        <Label Text="{Binding Name}"
+                                               FontSize="10"
+                                               TextColor="White"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Center"
+                                               VerticalTextAlignment="End"
+                                               VerticalOptions="EndAndExpand"
+                                               Margin="0,0,0,10" />
+                                    </VerticalStackLayout>
+                                </Border.Content>
                             </Border>
-                            
-                            <Label Grid.Row="0"
-                                   Text="{Binding Emoji}" 
-                                   FontSize="24"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center" />
-                            
-                            <Label Grid.Row="1"
-                                   Text="{Binding Name}" 
-                                   FontSize="10"
-                                   TextColor="White"
-                                   FontAttributes="Bold"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="End"
-                                   Margin="0,0,0,10" />
-                        </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -121,7 +124,7 @@
             <!-- Selected Mood Emoji -->
             <Label Grid.Row="5"
                    Grid.Column="0"
-                   Text="{Binding SelectedMood.Emoji}" 
+                   Text="{Binding SelectedMoodEmoji}"
                    FontSize="32"
                    HorizontalOptions="End"
                    VerticalOptions="Center"
@@ -130,7 +133,7 @@
             <!-- Selected Mood Name -->
             <Label Grid.Row="5"
                    Grid.Column="1"
-                   Text="{Binding SelectedMood.Name}" 
+                   Text="{Binding SelectedMoodName}"
                    FontSize="18" 
                    FontAttributes="Bold"
                    TextColor="{StaticResource Gray900}"
@@ -141,7 +144,7 @@
             <!-- Selected Mood Description -->
             <Label Grid.Row="6"
                    Grid.ColumnSpan="3"
-                   Text="{Binding SelectedMood.Description}" 
+                   Text="{Binding SelectedMoodDescription}"
                    FontSize="14" 
                    TextColor="{StaticResource Gray600}"
                    HorizontalOptions="Center"
@@ -177,7 +180,7 @@
                 </Border.StrokeShape>
                 <Label Text="{Binding CurrentQuote}" 
                        FontSize="16" 
-                       TextColor="{StaticResource Gray700}"
+                       TextColor="{StaticResource Gray600}"
                        HorizontalTextAlignment="Center"
                        VerticalOptions="Center"
                        LineHeight="1.4"
