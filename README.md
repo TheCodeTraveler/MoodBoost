@@ -1,6 +1,10 @@
 # MoodBoost - Daily Mood Tracker & Motivational App
 
-A fun, polished .NET MAUI application that helps users track their daily mood and provides motivational quotes for inspiration.
+A fun, polished .NET MAUI application that helps users track their daily mood and provides motivational quotes for inspiration. 
+
+This app was created using [Amazon Q Developer CLI](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line.html?trk=26a307dd-f6c6-4133-a99f-0388d1304aef&sc_channel=el).
+
+![App](./blog/Screenshot.png)
 
 ## Features
 
