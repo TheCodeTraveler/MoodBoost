@@ -1,9 +1,9 @@
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-using MoodMixer.Views;
-using MoodMixer.ViewModels;
+using Microsoft.Extensions.Logging;
+using MoodBoost.ViewModels;
+using MoodBoost.Views;
 
-namespace MoodMixer;
+namespace MoodBoost;
 
 public static class MauiProgram
 {
@@ -19,12 +19,12 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        // Register services
-        builder.Services.AddTransient<MainPage>();
-        builder.Services.AddTransient<MainViewModel>();
+        // Register ViewModels and Views
+        builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddSingleton<MainPage>();
 
 #if DEBUG
-        builder.Logging.AddDebug();
+        builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
 
         return builder.Build();

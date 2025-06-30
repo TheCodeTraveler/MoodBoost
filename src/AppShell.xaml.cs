@@ -1,4 +1,4 @@
-namespace MoodMixer;
+namespace MoodBoost;
 
 public partial class AppShell : Shell
 {

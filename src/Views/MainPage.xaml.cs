@@ -1,10 +1,10 @@
-using MoodMixer.ViewModels;
+using MoodBoost.ViewModels;
 
-namespace MoodMixer.Views;
+namespace MoodBoost.Views;
 
 public partial class MainPage : ContentPage
 {
-    public MainPage(MainViewModel viewModel)
+    public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;

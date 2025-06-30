@@ -1,197 +1,214 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage x:Class="MoodBoost.Views.MainPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:MoodMixer.ViewModels"
-             xmlns:models="clr-namespace:MoodMixer.Models"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="MoodMixer.Views.MainPage"
-             x:DataType="viewModels:MainViewModel"
-             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+             xmlns:vm="clr-namespace:MoodBoost.ViewModels"
+             xmlns:model="clr-namespace:MoodBoost.Models"
+             x:DataType="vm:MainPageViewModel"
+             Title="MoodBoost"
+             BackgroundColor="{StaticResource Primary}">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="ColorPreviewStyle" TargetType="Border">
-                <Setter Property="HeightRequest" Value="80" />
-                <Setter Property="WidthRequest" Value="80" />
-                <Setter Property="StrokeShape" Value="RoundRectangle 10" />
-                <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
-                <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="Margin" Value="5" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-            </Style>
-            
-            <Style x:Key="ColorLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="Margin" Value="0,5,0,10" />
-            </Style>
-            
-            <Style x:Key="ButtonStyle" TargetType="Button">
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="Padding" Value="15,10" />
-                <Setter Property="FontAttributes" Value="Bold" />
-            </Style>
-            
-            <Style x:Key="SavedThemeStyle" TargetType="Border">
-                <Setter Property="HeightRequest" Value="60" />
-                <Setter Property="StrokeShape" Value="RoundRectangle 8" />
-                <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
-                <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="Margin" Value="0,5" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" 
+              ColumnDefinitions="*,*,*"
+              Padding="20"
+              RowSpacing="20">
 
-    <Grid ColumnDefinitions="*,*,*"
-          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*"
-          Padding="20"
-          RowSpacing="10">
-        
-        <!-- App Title -->
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-               Text="MoodMixer" 
-               FontSize="32" 
-               FontAttributes="Bold" 
-               HorizontalOptions="Center"
-               Margin="0,0,0,5" />
-        
-        <!-- App Description -->
-        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-               Text="Create and save color themes that match your mood!"
-               FontSize="16"
-               HorizontalOptions="Center"
-               Margin="0,0,0,15" />
-        
-        <!-- Color Preview Boxes -->
-        <Border Grid.Row="2" Grid.Column="0"
-                BackgroundColor="{Binding PrimaryColor}"
-                Style="{StaticResource ColorPreviewStyle}">
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding RandomizeColorsCommand}" />
-            </Border.GestureRecognizers>
-        </Border>
-        
-        <Border Grid.Row="2" Grid.Column="1"
-                BackgroundColor="{Binding SecondaryColor}"
-                Style="{StaticResource ColorPreviewStyle}">
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding RandomizeColorsCommand}" />
-            </Border.GestureRecognizers>
-        </Border>
-        
-        <Border Grid.Row="2" Grid.Column="2"
-                BackgroundColor="{Binding AccentColor}"
-                Style="{StaticResource ColorPreviewStyle}">
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding RandomizeColorsCommand}" />
-            </Border.GestureRecognizers>
-        </Border>
-        
-        <!-- Color Labels -->
-        <Label Grid.Row="3" Grid.Column="0" 
-               Text="Primary" 
-               Style="{StaticResource ColorLabelStyle}" />
-        
-        <Label Grid.Row="3" Grid.Column="1" 
-               Text="Secondary" 
-               Style="{StaticResource ColorLabelStyle}" />
-        
-        <Label Grid.Row="3" Grid.Column="2" 
-               Text="Accent" 
-               Style="{StaticResource ColorLabelStyle}" />
-        
-        <!-- Randomize Button -->
-        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
-                Text="Randomize Colors"
-                Command="{Binding RandomizeColorsCommand}"
-                Style="{StaticResource ButtonStyle}"
-                BackgroundColor="{Binding AccentColor}"
-                TextColor="White"
-                Margin="0,5,0,15" />
-        
-        <!-- Theme Name Label -->
-        <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"
-               Text="Theme Name" 
-               FontSize="16" 
-               FontAttributes="Bold" />
-        
-        <!-- Theme Name Entry -->
-        <Entry Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
-               Text="{Binding ThemeName}" 
-               Placeholder="Enter a name for your theme"
-               ClearButtonVisibility="WhileEditing" />
-        
-        <!-- Save Theme Button -->
-        <Button Grid.Row="6" Grid.Column="2"
-                Text="Save Theme"
-                Command="{Binding SaveThemeCommand}"
-                IsEnabled="{Binding IsSaving, Converter={toolkit:InvertedBoolConverter}}"
-                Style="{StaticResource ButtonStyle}"
-                BackgroundColor="{Binding PrimaryColor}"
-                TextColor="White"
-                Margin="10,0,0,0" />
-        
-        <!-- Status Message -->
-        <Label Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3"
-               Text="{Binding StatusMessage}" 
-               FontSize="14" 
-               HorizontalOptions="Center"
-               IsVisible="{Binding StatusMessage, Converter={toolkit:IsListNotNullOrEmptyConverter}}" />
-        
-        <!-- Saved Themes Label -->
-        <Label Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"
-               Text="Saved Themes" 
-               FontSize="20" 
-               FontAttributes="Bold"
-               Margin="0,10,0,0" />
-        
-        <!-- Separator Line -->
-        <BoxView Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3"
-                 HeightRequest="1"
-                 Color="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
-                 Margin="0,5" />
-        
-        <!-- Saved Themes Collection -->
-        <CollectionView Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3"
-                        ItemsSource="{Binding SavedThemes}"
-                        EmptyView="No themes saved yet. Create your first theme above!">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:ColorTheme">
-                    <Border Style="{StaticResource SavedThemeStyle}">
-                        <Grid ColumnDefinitions="30,30,30,*,Auto,Auto" Padding="10,5">
-                            <!-- Color Swatches -->
-                            <Rectangle Grid.Column="0" Fill="{Binding PrimaryColor}" HeightRequest="30" />
-                            <Rectangle Grid.Column="1" Fill="{Binding SecondaryColor}" HeightRequest="30" />
-                            <Rectangle Grid.Column="2" Fill="{Binding AccentColor}" HeightRequest="30" />
-                            
-                            <!-- Theme Info -->
-                            <StackLayout Grid.Column="3" Orientation="Vertical" VerticalOptions="Center" Margin="10,0">
-                                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" />
-                                <Label Text="{Binding CreatedAt, StringFormat='{0:MMM dd, yyyy}'}" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
-                            </StackLayout>
-                            
-                            <!-- Apply Button -->
-                            <Button Grid.Column="4"
-                                    Text="Apply"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MainViewModel}}, Path=ApplyThemeCommand}"
-                                    CommandParameter="{Binding .}"
-                                    Style="{StaticResource ButtonStyle}"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
-                                    TextColor="White"
-                                    Margin="5,0" />
-                            
-                            <!-- Delete Button -->
-                            <Button Grid.Column="5"
-                                    Text="Delete"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MainViewModel}}, Path=DeleteThemeCommand}"
-                                    CommandParameter="{Binding .}"
-                                    Style="{StaticResource ButtonStyle}"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray600}}"
-                                    TextColor="White" />
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </Grid>
+            <!-- App Title -->
+            <Label Grid.Row="0"
+                   Grid.ColumnSpan="3"
+                   Text="MoodBoost" 
+                   FontSize="32" 
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center" />
+            
+            <!-- Date -->
+            <Label Grid.Row="1"
+                   Grid.ColumnSpan="3"
+                   Text="{Binding TodayDate, StringFormat='{0:dddd, MMMM dd, yyyy}'}" 
+                   FontSize="16" 
+                   TextColor="White"
+                   Opacity="0.8"
+                   HorizontalOptions="Center" />
+
+            <!-- Mood Selection Title -->
+            <Border Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    BackgroundColor="White" 
+                    StrokeThickness="0"
+                    Stroke="Transparent">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <Label Text="How are you feeling today?" 
+                       FontSize="18" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Gray900}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Padding="20,15" />
+            </Border>
+            
+            <!-- Mood Selection Collection -->
+            <CollectionView Grid.Row="3"
+                            Grid.ColumnSpan="3"
+                            ItemsSource="{Binding Moods}"
+                            SelectionMode="None"
+                            HeightRequest="100">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" 
+                                       ItemSpacing="15" />
+                </CollectionView.ItemsLayout>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MoodEntry">
+                            <Border Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    BackgroundColor="{Binding Color}"
+                                    StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    HeightRequest="80"
+                                    WidthRequest="80">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="25" />
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=SelectMoodCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+
+                                <Border.Content>
+                                    <VerticalStackLayout VerticalOptions="Center"
+                                                         Spacing="4">
+                                        <Label Text="{Binding Emoji}"
+                                               FontSize="24"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+
+                                        <Label Text="{Binding Name}"
+                                               FontSize="10"
+                                               TextColor="White"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Center"
+                                               VerticalTextAlignment="End"
+                                               VerticalOptions="EndAndExpand"
+                                               Margin="0,0,0,10" />
+                                    </VerticalStackLayout>
+                                </Border.Content>
+                            </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Selected Mood Title -->
+            <Border Grid.Row="4"
+                    Grid.ColumnSpan="3"
+                    BackgroundColor="White" 
+                    StrokeThickness="0"
+                    Stroke="Transparent"
+                    IsVisible="{Binding HasSelectedMood}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <Label Text="Your Current Mood" 
+                       FontSize="16" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Gray900}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Padding="20,15" />
+            </Border>
+
+            <!-- Selected Mood Emoji -->
+            <Label Grid.Row="5"
+                   Grid.Column="0"
+                   Text="{Binding SelectedMoodEmoji}"
+                   FontSize="32"
+                   HorizontalOptions="End"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding HasSelectedMood}" />
+
+            <!-- Selected Mood Name -->
+            <Label Grid.Row="5"
+                   Grid.Column="1"
+                   Text="{Binding SelectedMoodName}"
+                   FontSize="18" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Gray900}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding HasSelectedMood}" />
+
+            <!-- Selected Mood Description -->
+            <Label Grid.Row="6"
+                   Grid.ColumnSpan="3"
+                   Text="{Binding SelectedMoodDescription}"
+                   FontSize="14" 
+                   TextColor="{StaticResource Gray600}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding HasSelectedMood}" />
+
+            <!-- Quote Section Title -->
+            <Border Grid.Row="7"
+                    Grid.ColumnSpan="3"
+                    BackgroundColor="White" 
+                    StrokeThickness="0"
+                    Stroke="Transparent">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <Label Text="Daily Inspiration" 
+                       FontSize="16" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Gray900}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Padding="20,15" />
+            </Border>
+
+            <!-- Quote Text -->
+            <Border Grid.Row="8"
+                    Grid.ColumnSpan="3"
+                    BackgroundColor="White" 
+                    StrokeThickness="0"
+                    Stroke="Transparent">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <Label Text="{Binding CurrentQuote}" 
+                       FontSize="16" 
+                       TextColor="{StaticResource Gray600}"
+                       HorizontalTextAlignment="Center"
+                       VerticalOptions="Center"
+                       LineHeight="1.4"
+                       Padding="25" />
+            </Border>
+
+            <!-- New Quote Button -->
+            <Button Grid.Row="9"
+                    Grid.ColumnSpan="3"
+                    Text="New Quote" 
+                    Command="{Binding GenerateNewQuoteCommand}"
+                    BackgroundColor="{StaticResource Secondary}"
+                    TextColor="White"
+                    CornerRadius="15"
+                    FontAttributes="Bold"
+                    HeightRequest="45" />
+
+            <!-- Reset Button -->
+            <Button Grid.Row="10"
+                    Grid.ColumnSpan="3"
+                    Text="Reset Mood" 
+                    Command="{Binding ResetMoodCommand}"
+                    BackgroundColor="White"
+                    TextColor="{StaticResource Primary}"
+                    CornerRadius="20"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    IsVisible="{Binding HasSelectedMood}" />
+        </Grid>
+    </ScrollView>
 </ContentPage>
