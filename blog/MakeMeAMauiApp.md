@@ -13,11 +13,19 @@ This week we are building a Mobile App for iOS + Android in C# using .NET MAUI. 
 6. The code must follow best practices 
 7. The code must use the most-recent versions for all dependencies
 
-### The Completed App
+## The Completed App
 
-**Note:** If you're interested in learning more about prompt engineering and want to see the steps I used to guide Q Developer CLI, scroll down to the Appendix
+**Note:** If you're interested in learning more about prompt engineering and want to see the steps I used to guide Q Developer CLI, scroll down to the Appendix.
 
-### Thoughts
+First, let's take a look at the completed app:
+
+![](Screenshot.png)
+
+Not bad! The UI could use some small improvements, but overall, the app works.
+
+### Things to Watch Out For
+
+When vibe coding this app, I spotted a few items that .NET MAUI Developers should be aware of when using Claude Sonnet 4.0 with Amazon Q Developer:
 
 1. Used outdated NuGet Pacakages
 1. Used .NET 8 instead of .NET 9
@@ -34,6 +42,8 @@ This week we are building a Mobile App for iOS + Android in C# using .NET MAUI. 
 1. Implemented Nullable Warnings
 1. CollectionView.DataTemplate displayed no data (incorrect bindings)
 1. Used TapGestureRecognizer inside a DataTemplate instead of using CollectionView.SelectionChanged event
+
+The one big blocker is that the agentic workflow did not add `/Platforms/` folder and the necessary files specific to iOS and Android. Without this folder, the app will not compile.
 
 
 ## Appendix
