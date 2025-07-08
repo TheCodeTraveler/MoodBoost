@@ -4,6 +4,8 @@ A fun, polished .NET MAUI application that helps users track their daily mood an
 
 This app was created using [Amazon Q Developer CLI](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line.html?trk=26a307dd-f6c6-4133-a99f-0388d1304aef&sc_channel=el).
 
+Find the blog post detailing the app creation here: https://codetraveler.io/2025/07/03/hey-q-make-me-a-cool-mobile-app/
+
 ![App](./blog/Screenshot.png)
 
 ## Features
