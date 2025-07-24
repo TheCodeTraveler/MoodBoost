@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MoodBoost.Views.ThemesPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:MoodBoost.ViewModels"
+             x:DataType="vm:ThemesPageViewModel"
+             Title="Themes"
+             BackgroundColor="{StaticResource Primary}">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,*" 
+              ColumnDefinitions="*,*,*"
+              Padding="20"
+              RowSpacing="20"
+              ColumnSpacing="10">
+
+            <!-- Page Title -->
+            <Label Grid.Row="0"
+                   Grid.ColumnSpan="3"
+                   Text="Customize Your Theme" 
+                   FontSize="28" 
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center" />
+
+            <!-- Create New Theme Section Background -->
+            <Border Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    BackgroundColor="White" 
+                    StrokeThickness="0"
+                    Stroke="Transparent">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+            </Border>
+
+            <!-- Create New Theme Title -->
+            <Label Grid.Row="1"
+                   Grid.ColumnSpan="3"
+                   Text="Create New Theme" 
+                   FontSize="18" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Gray900}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   Margin="20,20,20,0" />
+
+            <!-- Theme Name Entry -->
+            <Entry Grid.Row="2"
+                   Grid.ColumnSpan="3"
+                   Text="{Binding NewThemeName}"
+                   Placeholder="Enter theme name..."
+                   BackgroundColor="{StaticResource Gray100}"
+                   TextColor="{StaticResource Gray900}"
+                   PlaceholderColor="{StaticResource Gray600}"
+                   Margin="20,0,20,0" />
+
+            <!-- Create Theme Button -->
+            <Button Grid.Row="3"
+                    Grid.ColumnSpan="3"
+                    Text="Create Theme"
+                    Command="{Binding CreateThemeCommand}"
+                    BackgroundColor="{StaticResource Secondary}"
+                    TextColor="White"
+                    CornerRadius="15"
+                    FontAttributes="Bold"
+                    HeightRequest="45"
+                    IsEnabled="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}"
+                    Margin="20,0,20,20" />
+
+            <!-- Active Theme Section Background -->
+            <Border Grid.Row="4"
+                    Grid.ColumnSpan="3"
+                    BackgroundColor="White" 
+                    StrokeThickness="0"
+                    Stroke="Transparent"
+                    IsVisible="{Binding ActiveTheme, Converter={toolkit:IsNotNullConverter}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+            </Border>
+
+            <!-- Active Theme Title -->
+            <Label Grid.Row="4"
+                   Grid.ColumnSpan="3"
+                   Text="Active Theme" 
+                   FontSize="16" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Gray900}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   IsVisible="{Binding ActiveTheme, Converter={toolkit:IsNotNullConverter}}"
+                   Margin="20,20,20,0" />
+
+            <!-- Active Theme Color -->
+            <Border Grid.Row="5"
+                    Grid.Column="0"
+                    BackgroundColor="{Binding ActiveTheme.PrimaryColorValue}"
+                    StrokeThickness="0"
+                    HeightRequest="40"
+                    WidthRequest="40"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    IsVisible="{Binding ActiveTheme, Converter={toolkit:IsNotNullConverter}}"
+                    Margin="0,0,10,20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+            </Border>
+
+            <!-- Active Theme Name -->
+            <Label Grid.Row="5"
+                   Grid.Column="1"
+                   Text="{Binding ActiveTheme.Name}" 
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Gray900}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   IsVisible="{Binding ActiveTheme, Converter={toolkit:IsNotNullConverter}}"
+                   Margin="0,0,0,20" />
+
+            <!-- Active Theme Status -->
+            <Label Grid.Row="5"
+                   Grid.Column="2"
+                   Text="✓ Active"
+                   FontSize="14"
+                   TextColor="{StaticResource Secondary}"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   IsVisible="{Binding ActiveTheme, Converter={toolkit:IsNotNullConverter}}"
+                   Margin="10,0,0,20" />
+
+            <!-- Available Themes Title Background -->
+            <Border Grid.Row="6"
+                    Grid.ColumnSpan="3"
+                    BackgroundColor="White" 
+                    StrokeThickness="0"
+                    Stroke="Transparent">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+            </Border>
+
+            <!-- Available Themes Title -->
+            <Label Grid.Row="6"
+                   Grid.ColumnSpan="3"
+                   Text="Available Themes" 
+                   FontSize="16" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Gray900}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Padding="20,15" />
+
+            <!-- Themes Collection -->
+            <CollectionView Grid.Row="7"
+                            Grid.ColumnSpan="3"
+                            ItemsSource="{Binding Themes}"
+                            SelectionMode="None">
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="White" 
+                                StrokeThickness="0"
+                                Stroke="Transparent"
+                                Margin="0,5">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="15" />
+                            </Border.StrokeShape>
+                            
+                            <Grid RowDefinitions="Auto,Auto" 
+                                  ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto"
+                                  Padding="15"
+                                  RowSpacing="10"
+                                  ColumnSpacing="10">
+                                
+                                <!-- Primary Color -->
+                                <Border Grid.Row="0"
+                                        Grid.Column="0"
+                                        BackgroundColor="{Binding PrimaryColorValue}"
+                                        StrokeThickness="0"
+                                        HeightRequest="30"
+                                        WidthRequest="30">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="15" />
+                                    </Border.StrokeShape>
+                                </Border>
+                                
+                                <!-- Secondary Color -->
+                                <Border Grid.Row="0"
+                                        Grid.Column="1"
+                                        BackgroundColor="{Binding SecondaryColorValue}"
+                                        StrokeThickness="0"
+                                        HeightRequest="30"
+                                        WidthRequest="30">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="15" />
+                                    </Border.StrokeShape>
+                                </Border>
+                                
+                                <!-- Accent Color -->
+                                <Border Grid.Row="0"
+                                        Grid.Column="2"
+                                        BackgroundColor="{Binding AccentColorValue}"
+                                        StrokeThickness="0"
+                                        HeightRequest="30"
+                                        WidthRequest="30"
+                                        IsVisible="{Binding AccentColorValue, Converter={toolkit:IsNotNullConverter}}">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="15" />
+                                    </Border.StrokeShape>
+                                </Border>
+                                
+                                <!-- Theme Name -->
+                                <Label Grid.Row="0"
+                                       Grid.Column="3"
+                                       Text="{Binding Name}" 
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Gray900}"
+                                       VerticalOptions="Center" />
+                                
+                                <!-- Active Indicator -->
+                                <Label Grid.Row="0"
+                                       Grid.Column="4"
+                                       Text="✓"
+                                       FontSize="16"
+                                       TextColor="{StaticResource Secondary}"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       IsVisible="{Binding IsActive}" />
+                                
+                                <!-- Set Active Button -->
+                                <Button Grid.Row="1"
+                                        Grid.Column="4"
+                                        Text="Set Active"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ThemesPageViewModel}}, Path=SetActiveThemeCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="{StaticResource Secondary}"
+                                        TextColor="White"
+                                        CornerRadius="10"
+                                        FontSize="12"
+                                        Padding="15,8"
+                                        IsVisible="{Binding IsActive, Converter={toolkit:InvertedBoolConverter}}" />
+                                
+                                <!-- Delete Button -->
+                                <Button Grid.Row="1"
+                                        Grid.Column="5"
+                                        Text="Delete"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ThemesPageViewModel}}, Path=DeleteThemeCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="{StaticResource Gray300}"
+                                        TextColor="{StaticResource Gray700}"
+                                        CornerRadius="10"
+                                        FontSize="12"
+                                        Padding="15,8"
+                                        IsVisible="{Binding IsActive, Converter={toolkit:InvertedBoolConverter}}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator Grid.Row="7"
+                               Grid.ColumnSpan="3"
+                               IsVisible="{Binding IsLoading}"
+                               IsRunning="{Binding IsLoading}"
+                               Color="{StaticResource Secondary}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+        </Grid>
+    </ScrollView>
+</ContentPage>

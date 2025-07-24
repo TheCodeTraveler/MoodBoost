@@ -4,13 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:MoodBoost.ViewModels"
-             xmlns:model="clr-namespace:MoodBoost.Models"
              x:DataType="vm:MainPageViewModel"
              Title="MoodBoost"
-             BackgroundColor="{StaticResource Primary}">
+             BackgroundColor="{Binding ActiveTheme.PrimaryColorValue, FallbackValue={StaticResource Primary}}">
 
     <ScrollView>
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" 
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" 
               ColumnDefinitions="*,*,*"
               Padding="20"
               RowSpacing="20">
@@ -63,7 +62,8 @@
                 </CollectionView.ItemsLayout>
                 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:MoodEntry">
+                    <DataTemplate>
+                        <Grid RowDefinitions="*,Auto" ColumnDefinitions="*">
                             <Border Grid.Row="0"
                                     Grid.RowSpan="2"
                                     BackgroundColor="{Binding Color}"
@@ -78,26 +78,23 @@
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=SelectMoodCommand}"
                                                           CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
-
-                                <Border.Content>
-                                    <VerticalStackLayout VerticalOptions="Center"
-                                                         Spacing="4">
-                                        <Label Text="{Binding Emoji}"
-                                               FontSize="24"
-                                               HorizontalOptions="Center"
-                                               VerticalOptions="Center" />
-
-                                        <Label Text="{Binding Name}"
-                                               FontSize="10"
-                                               TextColor="White"
-                                               FontAttributes="Bold"
-                                               HorizontalOptions="Center"
-                                               VerticalTextAlignment="End"
-                                               VerticalOptions="EndAndExpand"
-                                               Margin="0,0,0,10" />
-                                    </VerticalStackLayout>
-                                </Border.Content>
                             </Border>
+                            
+                            <Label Grid.Row="0"
+                                   Text="{Binding Emoji}" 
+                                   FontSize="24"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                            
+                            <Label Grid.Row="1"
+                                   Text="{Binding Name}" 
+                                   FontSize="10"
+                                   TextColor="White"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="End"
+                                   Margin="0,0,0,10" />
+                        </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -124,7 +121,7 @@
             <!-- Selected Mood Emoji -->
             <Label Grid.Row="5"
                    Grid.Column="0"
-                   Text="{Binding SelectedMoodEmoji}"
+                   Text="{Binding SelectedMood.Emoji}" 
                    FontSize="32"
                    HorizontalOptions="End"
                    VerticalOptions="Center"
@@ -133,7 +130,7 @@
             <!-- Selected Mood Name -->
             <Label Grid.Row="5"
                    Grid.Column="1"
-                   Text="{Binding SelectedMoodName}"
+                   Text="{Binding SelectedMood.Name}" 
                    FontSize="18" 
                    FontAttributes="Bold"
                    TextColor="{StaticResource Gray900}"
@@ -144,7 +141,7 @@
             <!-- Selected Mood Description -->
             <Label Grid.Row="6"
                    Grid.ColumnSpan="3"
-                   Text="{Binding SelectedMoodDescription}"
+                   Text="{Binding SelectedMood.Description}" 
                    FontSize="14" 
                    TextColor="{StaticResource Gray600}"
                    HorizontalOptions="Center"
@@ -180,7 +177,7 @@
                 </Border.StrokeShape>
                 <Label Text="{Binding CurrentQuote}" 
                        FontSize="16" 
-                       TextColor="{StaticResource Gray600}"
+                       TextColor="{StaticResource Gray700}"
                        HorizontalTextAlignment="Center"
                        VerticalOptions="Center"
                        LineHeight="1.4"
@@ -192,7 +189,7 @@
                     Grid.ColumnSpan="3"
                     Text="New Quote" 
                     Command="{Binding GenerateNewQuoteCommand}"
-                    BackgroundColor="{StaticResource Secondary}"
+                    BackgroundColor="{Binding ActiveTheme.SecondaryColorValue, FallbackValue={StaticResource Secondary}}"
                     TextColor="White"
                     CornerRadius="15"
                     FontAttributes="Bold"
@@ -204,11 +201,20 @@
                     Text="Reset Mood" 
                     Command="{Binding ResetMoodCommand}"
                     BackgroundColor="White"
-                    TextColor="{StaticResource Primary}"
+                    TextColor="{Binding ActiveTheme.PrimaryColorValue, FallbackValue={StaticResource Primary}}"
                     CornerRadius="20"
                     FontAttributes="Bold"
                     HeightRequest="50"
                     IsVisible="{Binding HasSelectedMood}" />
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator Grid.Row="11"
+                               Grid.ColumnSpan="3"
+                               IsVisible="{Binding IsLoading}"
+                               IsRunning="{Binding IsLoading}"
+                               Color="{Binding ActiveTheme.SecondaryColorValue, FallbackValue={StaticResource Secondary}}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
         </Grid>
     </ScrollView>
 </ContentPage>

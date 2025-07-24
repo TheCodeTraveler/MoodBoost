@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using MoodBoost.Services;
 using MoodBoost.ViewModels;
 using MoodBoost.Views;
 
@@ -19,9 +20,15 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        // Register Services
+        builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
+        builder.Services.AddSingleton<IThemeService, ThemeService>();
+
         // Register ViewModels and Views
         builder.Services.AddSingleton<MainPageViewModel>();
         builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddTransient<ThemesPageViewModel>();
+        builder.Services.AddTransient<ThemesPage>();
 
 #if DEBUG
         builder.Services.AddLogging(configure => configure.AddDebug());

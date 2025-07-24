@@ -2,11 +2,11 @@ using MoodBoost.ViewModels;
 
 namespace MoodBoost.Views;
 
-public partial class MainPage : ContentPage
+public partial class ThemesPage : ContentPage
 {
-    private readonly MainPageViewModel _viewModel;
+    private readonly ThemesPageViewModel _viewModel;
 
-    public MainPage(MainPageViewModel viewModel)
+    public ThemesPage(ThemesPageViewModel viewModel)
     {
         InitializeComponent();
         _viewModel = viewModel;
