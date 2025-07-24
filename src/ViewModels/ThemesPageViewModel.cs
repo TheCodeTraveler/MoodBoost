@@ -8,143 +8,143 @@ namespace MoodBoost.ViewModels;
 
 public partial class ThemesPageViewModel : ObservableObject
 {
-    private readonly IThemeService _themeService;
+	readonly IThemeService _themeService;
 
-    public ThemesPageViewModel(IThemeService themeService)
-    {
-        _themeService = themeService;
-        Themes = [];
-    }
+	public ThemesPageViewModel(IThemeService themeService)
+	{
+		_themeService = themeService;
+		Themes = [];
+	}
 
-    public ObservableCollection<Theme> Themes { get; }
+	public ObservableCollection<Theme> Themes { get; }
 
-    [ObservableProperty]
-    public partial Theme? ActiveTheme { get; set; }
+	[ObservableProperty]
+	public partial Theme? ActiveTheme { get; set; }
 
-    [ObservableProperty]
-    public partial bool IsLoading { get; set; }
+	[ObservableProperty]
+	public partial bool IsLoading { get; set; }
 
-    [ObservableProperty]
-    public partial string NewThemeName { get; set; } = string.Empty;
+	[ObservableProperty]
+	public partial string NewThemeName { get; set; } = string.Empty;
 
-    public async Task InitializeAsync()
-    {
-        await LoadThemesAsync();
-        await LoadActiveThemeAsync();
-    }
+	public async Task InitializeAsync()
+	{
+		await LoadThemesAsync();
+		await LoadActiveThemeAsync();
+	}
 
-    [RelayCommand]
-    private async Task CreateThemeAsync()
-    {
-        if (string.IsNullOrWhiteSpace(NewThemeName))
-        {
-            return;
-        }
+	[RelayCommand]
+async Task CreateThemeAsync()
+	{
+		if (string.IsNullOrWhiteSpace(NewThemeName))
+		{
+			return;
+		}
 
-        IsLoading = true;
-        
-        try
-        {
-            // Generate random colors for the new theme
-            var random = Random.Shared;
-            var colors = new[]
-            {
-                "#FF6B35", "#F7931E", "#FFD700", "#4CAF50", "#8BC34A",
-                "#2196F3", "#03DAC6", "#9C27B0", "#E91E63", "#FF5722",
-                "#795548", "#607D8B", "#FF9800", "#3F51B5", "#009688"
-            };
-            
-            var primaryColor = colors[random.Next(colors.Length)];
-            var secondaryColor = colors[random.Next(colors.Length)];
-            var accentColor = colors[random.Next(colors.Length)];
-            
-            await _themeService.CreateThemeAsync(NewThemeName, primaryColor, secondaryColor, accentColor);
-            NewThemeName = string.Empty;
-            await LoadThemesAsync();
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
+		IsLoading = true;
 
-    [RelayCommand]
-    private async Task DeleteThemeAsync(Theme theme)
-    {
-        if (theme is null)
-        {
-            return;
-        }
+		try
+		{
+			// Generate random colors for the new theme
+			var random = Random.Shared;
+			var colors = new[]
+			{
+				"#FF6B35", "#F7931E", "#FFD700", "#4CAF50", "#8BC34A",
+				"#2196F3", "#03DAC6", "#9C27B0", "#E91E63", "#FF5722",
+				"#795548", "#607D8B", "#FF9800", "#3F51B5", "#009688"
+			};
 
-        IsLoading = true;
-        
-        try
-        {
-            var success = await _themeService.DeleteThemeAsync(theme.Id);
-            if (success)
-            {
-                await LoadThemesAsync();
-                await LoadActiveThemeAsync();
-            }
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
+			var primaryColor = colors[random.Next(colors.Length)];
+			var secondaryColor = colors[random.Next(colors.Length)];
+			var accentColor = colors[random.Next(colors.Length)];
 
-    [RelayCommand]
-    private async Task SetActiveThemeAsync(Theme theme)
-    {
-        if (theme is null)
-        {
-            return;
-        }
+			await _themeService.CreateThemeAsync(NewThemeName, primaryColor, secondaryColor, accentColor);
+			NewThemeName = string.Empty;
+			await LoadThemesAsync();
+		}
+		finally
+		{
+			IsLoading = false;
+		}
+	}
 
-        IsLoading = true;
-        
-        try
-        {
-            var success = await _themeService.SetActiveThemeAsync(theme.Id);
-            if (success)
-            {
-                await LoadActiveThemeAsync();
-                await LoadThemesAsync(); // Refresh to update IsActive status
-            }
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
+	[RelayCommand]
+async Task DeleteThemeAsync(Theme theme)
+	{
+		if (theme is null)
+		{
+			return;
+		}
 
-    private async Task LoadActiveThemeAsync()
-    {
-        try
-        {
-            ActiveTheme = await _themeService.GetActiveThemeAsync();
-        }
-        catch
-        {
-            // Handle error silently or log it
-        }
-    }
+		IsLoading = true;
 
-    private async Task LoadThemesAsync()
-    {
-        try
-        {
-            var themes = await _themeService.GetAllThemesAsync();
-            Themes.Clear();
-            
-            foreach (var theme in themes)
-            {
-                Themes.Add(theme);
-            }
-        }
-        catch
-        {
-            // Handle error silently or log it
-        }
-    }
+		try
+		{
+			var success = await _themeService.DeleteThemeAsync(theme.Id);
+			if (success)
+			{
+				await LoadThemesAsync();
+				await LoadActiveThemeAsync();
+			}
+		}
+		finally
+		{
+			IsLoading = false;
+		}
+	}
+
+	[RelayCommand]
+async Task SetActiveThemeAsync(Theme theme)
+	{
+		if (theme is null)
+		{
+			return;
+		}
+
+		IsLoading = true;
+
+		try
+		{
+			var success = await _themeService.SetActiveThemeAsync(theme.Id);
+			if (success)
+			{
+				await LoadActiveThemeAsync();
+				await LoadThemesAsync(); // Refresh to update IsActive status
+			}
+		}
+		finally
+		{
+			IsLoading = false;
+		}
+	}
+
+	async Task LoadActiveThemeAsync()
+	{
+		try
+		{
+			ActiveTheme = await _themeService.GetActiveThemeAsync();
+		}
+		catch
+		{
+			// Handle error silently or log it
+		}
+	}
+
+	async Task LoadThemesAsync()
+	{
+		try
+		{
+			var themes = await _themeService.GetAllThemesAsync();
+			Themes.Clear();
+
+			foreach (var theme in themes)
+			{
+				Themes.Add(theme);
+			}
+		}
+		catch
+		{
+			// Handle error silently or log it
+		}
+	}
 }

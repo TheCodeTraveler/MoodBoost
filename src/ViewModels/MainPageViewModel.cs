@@ -8,7 +8,7 @@ namespace MoodBoost.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
-    private readonly IThemeService _themeService;
+    readonly IThemeService _themeService;
 
     public MainPageViewModel(IThemeService themeService)
     {
@@ -48,7 +48,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task CreateThemeAsync(string themeName)
+    async Task CreateThemeAsync(string themeName)
     {
         if (string.IsNullOrWhiteSpace(themeName))
         {
@@ -56,7 +56,7 @@ public partial class MainPageViewModel : ObservableObject
         }
 
         IsLoading = true;
-        
+
         try
         {
             // Generate random colors for the new theme
@@ -66,10 +66,10 @@ public partial class MainPageViewModel : ObservableObject
                 "#FF6B35", "#F7931E", "#FFD700", "#4CAF50", "#8BC34A",
                 "#2196F3", "#03DAC6", "#9C27B0", "#E91E63", "#FF5722"
             };
-            
+
             var primaryColor = colors[random.Next(colors.Length)];
             var secondaryColor = colors[random.Next(colors.Length)];
-            
+
             await _themeService.CreateThemeAsync(themeName, primaryColor, secondaryColor);
             await LoadThemesAsync();
         }
@@ -80,7 +80,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task DeleteThemeAsync(Theme theme)
+    async Task DeleteThemeAsync(Theme theme)
     {
         if (theme is null)
         {
@@ -88,7 +88,7 @@ public partial class MainPageViewModel : ObservableObject
         }
 
         IsLoading = true;
-        
+
         try
         {
             var success = await _themeService.DeleteThemeAsync(theme.Id);
@@ -105,7 +105,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GenerateNewQuote()
+    void GenerateNewQuote()
     {
         var quotes = MoodData.MotivationalQuotes;
         var randomIndex = Random.Shared.Next(quotes.Count);
@@ -113,7 +113,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void ResetMood()
+    void ResetMood()
     {
         SelectedMood = null;
         HasSelectedMood = false;
@@ -121,7 +121,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SelectMood(MoodEntry mood)
+    void SelectMood(MoodEntry mood)
     {
         SelectedMood = mood;
         HasSelectedMood = true;
@@ -129,7 +129,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task SetActiveThemeAsync(Theme theme)
+    async Task SetActiveThemeAsync(Theme theme)
     {
         if (theme is null)
         {
@@ -137,7 +137,7 @@ public partial class MainPageViewModel : ObservableObject
         }
 
         IsLoading = true;
-        
+
         try
         {
             var success = await _themeService.SetActiveThemeAsync(theme.Id);
@@ -152,7 +152,7 @@ public partial class MainPageViewModel : ObservableObject
         }
     }
 
-    private async Task LoadActiveThemeAsync()
+    async Task LoadActiveThemeAsync()
     {
         try
         {
@@ -164,13 +164,13 @@ public partial class MainPageViewModel : ObservableObject
         }
     }
 
-    private async Task LoadThemesAsync()
+    async Task LoadThemesAsync()
     {
         try
         {
             var themes = await _themeService.GetAllThemesAsync();
             Themes.Clear();
-            
+
             foreach (var theme in themes)
             {
                 Themes.Add(theme);

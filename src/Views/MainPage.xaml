@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:MoodBoost.ViewModels"
+             xmlns:models="clr-namespace:MoodBoost.Models"
              x:DataType="vm:MainPageViewModel"
              Title="MoodBoost"
              BackgroundColor="{Binding ActiveTheme.PrimaryColorValue, FallbackValue={StaticResource Primary}}">
@@ -22,7 +23,7 @@
                    FontAttributes="Bold"
                    TextColor="White"
                    HorizontalOptions="Center" />
-            
+
             <!-- Date -->
             <Label Grid.Row="1"
                    Grid.ColumnSpan="3"
@@ -49,7 +50,7 @@
                        VerticalOptions="Center"
                        Padding="20,15" />
             </Border>
-            
+
             <!-- Mood Selection Collection -->
             <CollectionView Grid.Row="3"
                             Grid.ColumnSpan="3"
@@ -60,9 +61,9 @@
                     <LinearItemsLayout Orientation="Horizontal" 
                                        ItemSpacing="15" />
                 </CollectionView.ItemsLayout>
-                
+
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate  x:DataType="models:MoodEntry">
                         <Grid RowDefinitions="*,Auto" ColumnDefinitions="*">
                             <Border Grid.Row="0"
                                     Grid.RowSpan="2"
@@ -75,17 +76,19 @@
                                     <RoundRectangle CornerRadius="25" />
                                 </Border.StrokeShape>
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=SelectMoodCommand}"
-                                                          CommandParameter="{Binding .}" />
+                                    <TapGestureRecognizer
+                                        x:DataType="vm:MainPageViewModel"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=SelectMoodCommand}"
+                                        CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
                             </Border>
-                            
+
                             <Label Grid.Row="0"
                                    Text="{Binding Emoji}" 
                                    FontSize="24"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center" />
-                            
+
                             <Label Grid.Row="1"
                                    Text="{Binding Name}" 
                                    FontSize="10"
@@ -177,7 +180,7 @@
                 </Border.StrokeShape>
                 <Label Text="{Binding CurrentQuote}" 
                        FontSize="16" 
-                       TextColor="{StaticResource Gray700}"
+                       TextColor="{StaticResource Gray600}"
                        HorizontalTextAlignment="Center"
                        VerticalOptions="Center"
                        LineHeight="1.4"

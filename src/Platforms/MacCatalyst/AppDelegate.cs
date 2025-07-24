@@ -1,4 +1,5 @@
 using Foundation;
+using MoodBoost;
 
 namespace MoodMixer;
 
