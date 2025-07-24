@@ -3,24 +3,28 @@
 Welcome to the **Hey Q!** blog series where we build fun apps using [Amazon Q Developer](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line.html?trk=26a307dd-f6c6-4133-a99f-0388d1304aef&sc_channel=el) and learn about the code along the way! The scope of the sample apps created in this series are small 1-2 page applications that are fun, well designed and properly architected following best practices. And, the best part, the code is all open-source allowing you to grab it and use it for your apps! Here's the link to the completed open-source project: https://github.com/TheCodeTraveler/MoodBoost
 
 This week we are updating an existing mobile app built in .NET MAUI. For this app, I have a few goals:
-1. The app must compile and run on Windows Desktop
+1. The app must compile and run on iOS and Android
 2. The app must have a nice, highly polished, professional User Interface (UI)
-3. The app must have a fun name that relates to its use
-4. The code must be created by first using the latest version of the **WPF** template in the latest version of Visual Studio
-5. The code must use the MVVM Architecture
-6. The code must follow best practices
-7. The code must use the most-recent versions for all dependencies
+3. The app must have a local database to store user inputs
+4. The code must use the MVVM Architecture
+5. The code must follow best practices
+6. The code must use the most-recent versions for all dependencies
 
 ## The Completed App
 
 **Note:** If you're interested in learning more about prompt engineering and want to see the steps I used to guide Q Developer CLI, scroll down to the Appendix.
 
-### Things to watch out for
+The UI for the completed app keeps the styling of the original MoodBoost app which is good, however, the UI still fails to be highly polished and does not match what I would expect from a Senior UI Designer.
 
-1. Used Null Forgiving Operator
-2. Did not `await` Tasks
-3. Used the `_ = Task.Run()` pattern 
-4. Nested layouts (Grid inside of a Grid)
+![](./UpdateMyMauiApp.md)
+
+Along with a UI that needs some re-work, the code also required a few re-prompts to adhere to best practices:
+
+When creating the DatabaseService, Q Developer CLI used the Null Forgiving Operator (`!.`) to access the database. This operator allows code to access a nullable variable without first confirming that the variable is not null. This is an anti-pattern that leads to future bugs in the app where it will crash unexpectedly due to a NullReferenceException. Instead, I recommend checking for `null` first and handling the `null` variable accordingly.
+
+When creating the MainPageViewModel, Q Developer CLI fired a `Task` in the constructor using the Task Discard pattern, `_ = Task.Run(...);`. This is a big no no that can lead to hard-to-find bugs because every `Task` needs to be `await`'d. When a `Task` is not `await`'d, it may hide exceptions thrown while it was running. After re-prompting Q, we moved he asynchronous code outside of the constructor where we are now able to use the `await` keyword.
+
+Lastly, when creating the Themes page, Q Developer CLI nested multiple layouts inside of the base `Grid` layout. For example, it put a `Grid` inside of a `Grid`. This is bad because it increases the complexity of the UI and decreases the app's performance. Every additional layout placed inside of a layout requires more computation by the CPU to determine where to draw it on the screen. After re-prompting Q, I was able to flatten the nested layouts into one `Grid`.
 
 ## Appendix
 
